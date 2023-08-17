@@ -2964,10 +2964,17 @@
     .locals 3
 
     .line 1596
+    invoke-direct {p0}, Lcom/mediatek/location/lppe/main/LPPeService;->isInEmergency()Z
+
+    move-result v0
+
+    if-nez v0, :cond_1
+
     invoke-direct {p0}, Lcom/mediatek/location/lppe/main/LPPeService;->isAssistedGpsEnabled()Z
 
     move-result v0
 
+    :cond_1
     .line 1598
     new-instance v1, Ljava/lang/StringBuilder;
 
