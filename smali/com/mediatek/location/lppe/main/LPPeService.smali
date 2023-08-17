@@ -83,7 +83,7 @@
 
 .field private mLastBatteryPercentage:I
 
-.field private mLbsReceiver:Lcom/mediatek/location/lppe/lbs/LPPeLbs$LPPeLbsReceiver;
+.field public mLbsReceiver:Lcom/mediatek/location/lppe/lbs/LPPeLbs$LPPeLbsReceiver;
 
 .field private mLbsSender:Lcom/mediatek/location/lppe/lbs/LPPeLbs$LPPeLbsSender;
 
@@ -151,6 +151,7 @@
 
 .field private mWifiState:I
 
+.field private mEmListener:Lcom/mediatek/location/lppe/main/EmergencyCallListener;
 
 # direct methods
 .method static constructor <clinit>()V
@@ -804,6 +805,22 @@
     invoke-virtual {p1, v0}, Lcom/mediatek/location/lppe/lbs/LPPeLbs$LPPeLbsReceiver;->requestCapabilities(I)V
 
     invoke-direct {p0}, Lcom/mediatek/location/lppe/main/LPPeService;->registerSettingsObserver()V
+
+    new-instance v0, Lcom/mediatek/location/lppe/main/EmergencyCallListener;
+
+    invoke-direct {v0, p0}, Lcom/mediatek/location/lppe/main/EmergencyCallListener;-><init>(Lcom/mediatek/location/lppe/main/LPPeService;)V
+
+    iput-object v0, p0, Lcom/mediatek/location/lppe/main/LPPeService;->mEmListener:Lcom/mediatek/location/lppe/main/EmergencyCallListener;
+
+    iget-object v1, p0, Lcom/mediatek/location/lppe/main/LPPeService;->mTelephonyMgr:Landroid/telephony/TelephonyManager;
+
+    iget-object v2, p0, Lcom/mediatek/location/lppe/main/LPPeService;->mContext:Landroid/content/Context;
+
+    invoke-virtual {v2}, Landroid/content/Context;->getMainExecutor()Ljava/util/concurrent/Executor;
+
+    move-result-object v2
+
+    invoke-virtual {v1, v2, v0}, Landroid/telephony/TelephonyManager;->registerTelephonyCallback(Ljava/util/concurrent/Executor;Landroid/telephony/TelephonyCallback;)V
 
     .line 388
     iget-object p1, p0, Lcom/mediatek/location/lppe/main/LPPeService;->mContext:Landroid/content/Context;
